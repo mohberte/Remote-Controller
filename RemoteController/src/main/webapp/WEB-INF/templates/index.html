@@ -1,0 +1,131 @@
+
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/style.css" th:href="@{/css/style.css}" />
+<script src="../../js/jquery-3.6.1.min.js"></script>
+<script src="js/jquery-3.6.1.min.js"></script>
+
+<body>
+	<div id="remote" class="remote">
+	
+		<div id="row" th:each="row,rowIter : ${CommandList}">
+			
+			<span>
+				<input type="text" th:if="${rowIter.index == 0}" th:value="${DevicesSelected.get(0)}"/> 
+				<input type="text" th:if="${rowIter.index == 1}" th:value="${DevicesSelected.get(1)}"/> 
+				<input type="text" th:if="${rowIter.index == 2}" th:value="${DevicesSelected.get(2)}"/>
+			</span>
+			<span>
+			<!--  Displays the on and off buttons depending on the iteration  -->
+			<button th:each="command,commandIter  : ${row}"
+					th:with="id = |${rowIter.index}${commandIter.index}|"
+					th:attr="onclick=|display('${id}')|" 
+					class="button buttonOn">
+					<span th:if="${commandIter.index == 0}"
+						th:id="|${rowIter.index}${commandIter.index}|" 
+						th:block
+						th:text="On" 
+						th:value="${command.execute()}">
+					</span>
+					
+				 	<span
+						th:if="${commandIter.index  == 1}"
+						th:id="|${rowIter.index}${commandIter.index}|" 
+						th:block
+						th:text="Off" 
+						th:value="${command.execute()}">
+					</span>
+			</button>
+			</span>
+		</div>
+		<div id="row">
+			<span><input type="text" th:value="Macro"
+				 /></span> 
+				 <span>
+				 <button
+				 th:attr="onclick=|display('macro')|" 
+					class="button buttonOn" 
+					id = "macro"
+					th:value="${session.Macro}">Macro
+					</button>
+				</span> <span>
+					</span>
+
+		</div>
+
+		<div class="output" id="row">
+	  <span></span>
+	</div>
+		
+	</div>
+	<div id="setup" class="setup">
+		<form action="addDevicesServlet" onsubmit="return validateForm()" method="get">
+			<div>Choose your devices: ( Maximum 3 )</div>
+			<label id="devices"> <input name="devices" type="checkbox"
+				class="devices-checkbox"
+				id="devices-checkbox" th:each="device : ${session.Devices} "
+				th:value="${device.serial}" th:text="${device.name}" />
+			</label> 
+		<div>Choose your commands: Will be assigned to Macro -
+			4 Commands Max</div>
+
+			<label id="commands" >
+				<input type="checkbox"
+				th:each="command : ${session.Commands}"
+				name="macroSelection"
+				class="commands-checkbox"
+				id="commandsCheckbox"
+				th:text="${command.getCommandClass()}"
+				th:value="${command.getCommandClass()}"
+				 />
+				
+			</label>
+			<input type="submit" id="submit" value="Submit" /> <input type="reset"
+				value="Reset" />
+		</form>
+	</div>
+</body>
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+
+	var limitDevices = 3;
+	$('input.devices-checkbox').on('change', function(evt) {
+		if ($(this).siblings(':checked').length >= limitDevices) {
+			this.checked = false;
+		}
+	});
+	var limitCommands = 4;
+	$('input.commands-checkbox').on('change', function(evt) {
+		if ($(this).siblings(':checked').length >= limitCommands) {
+			this.checked = false;
+		}
+	});
+
+function validateForm() {
+	
+	var dev = $('input.devices-checkbox').siblings(':checked').length;
+	var com = $('input.commands-checkbox').siblings(':checked').length;
+	console.log(dev + " " + com);
+	if(dev>=1&&com>=1)
+		return true;
+	else
+	  return false;
+	}
+
+	function display(id) {
+
+	var text = document.getElementById(id).getAttribute("value");
+		var output = document.getElementsByClassName("output");
+		output[0].innerHTML=text;
+	}
+	
+	var session = /*[[${session}]]*/ {};
+	  console.log(session);
+
+	  if(session.Macro === undefined)
+		  $(document).ready(function() {
+		    location.reload();
+		});
+
+	/*]]>*/
+</script>

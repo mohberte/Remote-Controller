@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap');
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+body {
+  font-family: 'Rubik', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #dfdfdf;
+  color: #000000;
+  
+   		display: grid;
+        grid-template-columns: 1fr 2fr ;	      
+  		max-width: 850px;
+		  margin: 0 auto;	   
+}
+
+a {
+  color: rgb(192, 192, 192);
+}
+
+#remote {    	
+	    background-color: #808080;
+	    border-style: outset;
+        border-radius: 50px;
+       width: 300px;
+       }
+       
+#row {
+           margin-top:7px;
+       }  
+#devices{
+	  	display: grid;
+        grid-template-columns: 1fr 4fr  ;
+   	 	grid-row-gap: 10px;
+}
+#commands{   
+	   	display: grid;
+        grid-template-columns: 1fr 4fr;
+        grid-row-gap: 10px;
+}
+.output
+{
+	background-color: #04AA6D;
+}
+  .button {
+  background-color: #04AA6D;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+}
+
+.buttonOn {border-radius: 50%;}
+.buttonOff {border-radius: 50%;}
+      
